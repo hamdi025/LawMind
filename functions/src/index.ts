@@ -2,15 +2,15 @@
  * functions/src/index.ts
  */
 
-import { defineSecret } from "firebase-functions/params";
-import { onRequest } from "firebase-functions/v2/https";
-import { setGlobalOptions } from "firebase-functions/v2";
+import {defineSecret} from "firebase-functions/params";
+import {onRequest} from "firebase-functions/v2/https";
+import {setGlobalOptions} from "firebase-functions/v2";
 import * as logger from "firebase-functions/logger";
 import OpenAI from "openai";
 import cors from "cors";
 import * as admin from "firebase-admin";
 
-setGlobalOptions({ maxInstances: 10 });
+setGlobalOptions({maxInstances: 10});
 
 const openaiKey = defineSecret("OPENAI_API_KEY");
 const visionApiKey = defineSecret("VISION_API_KEY");
@@ -19,7 +19,7 @@ if (!admin.apps.length) {
   admin.initializeApp();
 }
 
-const corsHandler = cors({ origin: true });
+const corsHandler = cors({origin: true});
 
 /* ===================== Common helpers ===================== */
 
@@ -726,111 +726,93 @@ function inferVictimsCountHint(question: string): number {
 
 function getOffenseLexicon(offense: OffenseSlug): string[] {
   switch (offense) {
-    case "killing":
-      return ["قتل", "القتل", "قتل قصدا", "القتل قصدا", "قتل انسانا"];
-    case "theft":
-      return ["سرقه", "السرقه", "سارق", "اخذ مال الغير"];
-    case "embezzlement":
-      return ["اختلاس", "مختلس", "اختلس", "المال المسلم اليه", "الموظف العام"];
-    case "breach_of_trust":
-      return ["خيانه الامانه", "خيانة الأمانة", "اساءه الائتمان", "إساءة الائتمان"];
-    case "fraud":
-      return ["احتيال", "الاحتيال", "خداع"];
-    case "forgery":
-      return ["تزوير", "التزوير", "مزور", "تحريف"];
-    case "use_of_forged_document":
-      return ["استعمال مزور", "استعمال سند مزور", "استعمال محرر مزور", "استعمل المزور"];
-    case "drugs_possession":
-      return ["حيازه", "حيازة", "احراز", "إحراز", "ماده مخدره", "مادة مخدرة", "مواد مخدره", "مواد مخدرة"];
-    case "drugs_use":
-      return ["تعاطي", "تعاطى", "استعمال مواد مخدره", "استعمال مواد مخدرة"];
-    case "drugs_promotion":
-      return ["ترويج", "روج", "بقصد الترويج"];
-    case "drugs_trafficking":
-      return ["اتجار", "الاتجار", "بيع مواد مخدره", "بيع مواد مخدرة", "استيراد", "تصدير"];
-    case "traffic_violation":
-      return ["اشاره حمراء", "اشارة حمراء", "مخالفه مروريه", "مخالفة مرورية", "رخصة قيادة", "رخصه قياده"];
-    case "injury":
-      return ["ايذاء", "إيذاء", "ضرب", "جرح"];
-    case "threat":
-      return ["تهديد"];
-    case "kidnapping":
-      return ["خطف", "اختطاف"];
-    case "bribery":
-      return ["رشوه", "الرشوة"];
-    case "money_laundering":
-      return ["غسل اموال", "غسل أموال"];
-    case "terrorism":
-      return ["ارهاب", "إرهاب"];
-    case "perjury":
-      return ["شهاده الزور", "شهادة الزور"];
-    case "cybercrime":
-      return ["جرائم الكترونيه", "جرائم إلكترونية", "اختراق", "دخول غير مشروع"];
-    default:
-      return [];
+  case "killing":
+    return ["قتل", "القتل", "قتل قصدا", "القتل قصدا", "قتل انسانا"];
+  case "theft":
+    return ["سرقه", "السرقه", "سارق", "اخذ مال الغير"];
+  case "embezzlement":
+    return ["اختلاس", "مختلس", "اختلس", "المال المسلم اليه", "الموظف العام"];
+  case "breach_of_trust":
+    return ["خيانه الامانه", "خيانة الأمانة", "اساءه الائتمان", "إساءة الائتمان"];
+  case "fraud":
+    return ["احتيال", "الاحتيال", "خداع"];
+  case "forgery":
+    return ["تزوير", "التزوير", "مزور", "تحريف"];
+  case "use_of_forged_document":
+    return ["استعمال مزور", "استعمال سند مزور", "استعمال محرر مزور", "استعمل المزور"];
+  case "drugs_possession":
+    return ["حيازه", "حيازة", "احراز", "إحراز", "ماده مخدره", "مادة مخدرة", "مواد مخدره", "مواد مخدرة"];
+  case "drugs_use":
+    return ["تعاطي", "تعاطى", "استعمال مواد مخدره", "استعمال مواد مخدرة"];
+  case "drugs_promotion":
+    return ["ترويج", "روج", "بقصد الترويج"];
+  case "drugs_trafficking":
+    return ["اتجار", "الاتجار", "بيع مواد مخدره", "بيع مواد مخدرة", "استيراد", "تصدير"];
+  case "traffic_violation":
+    return ["اشاره حمراء", "اشارة حمراء", "مخالفه مروريه", "مخالفة مرورية", "رخصة قيادة", "رخصه قياده"];
+  case "injury":
+    return ["ايذاء", "إيذاء", "ضرب", "جرح"];
+  case "threat":
+    return ["تهديد"];
+  case "kidnapping":
+    return ["خطف", "اختطاف"];
+  case "bribery":
+    return ["رشوه", "الرشوة"];
+  case "money_laundering":
+    return ["غسل اموال", "غسل أموال"];
+  case "terrorism":
+    return ["ارهاب", "إرهاب"];
+  case "perjury":
+    return ["شهاده الزور", "شهادة الزور"];
+  case "cybercrime":
+    return ["جرائم الكترونيه", "جرائم إلكترونية", "اختراق", "دخول غير مشروع"];
+  default:
+    return [];
   }
 }
 
 function getDomainKeywords(domain: LawDomain): string[] {
   switch (domain) {
-    case "traffic":
-      return ["قانون السير", "مرور", "مخالفه مروريه", "مخالفة مرورية", "اشاره حمراء", "اشارة حمراء"];
-    case "drugs":
-      return ["مخدر", "مواد مخدره", "مواد مخدرة", "تعاطي", "ترويج", "اتجار", "قانون المخدرات"];
-    case "sharia":
-      return ["احوال شخصيه", "أحوال شخصية", "ميراث", "تركة", "طلاق", "عدة", "نفقة", "حضانة"];
-    case "labor":
-      return ["قانون العمل", "فصل تعسفي", "عامل", "اشعار", "إشعار", "اجازة", "إجازة"];
-    case "execution":
-      return ["تنفيذ", "حبس المدين", "حبس تنفيذي", "دائره التنفيذ", "دائرة التنفيذ"];
-    case "evidence":
-      return ["اثبات", "إثبات", "السند العادي", "انكار التوقيع", "إنكار التوقيع", "تزوير فرعي"];
-    case "criminal_procedure":
-      return ["اصول المحاكمات الجزائيه", "أصول المحاكمات الجزائية", "استئناف", "الحق الشخصي", "دعوى الحق العام"];
-    case "procedure":
-      return ["اصول المحاكمات", "أصول المحاكمات", "وقف التنفيذ", "وقف تنفيذ الحكم"];
-    case "companies":
-      return ["شركه", "شركة", "مساهمه", "مساهمة", "اسهم", "أسهم"];
-    case "commercial":
-      return ["تجاري", "شيك", "كمبياله", "كمبيالة", "سند لأمر"];
-    case "civil":
-      return ["مدني", "تعويض", "مسؤوليه مدنيه", "مسؤولية مدنية", "عقد"];
-    case "social_security":
-      return ["ضمان اجتماعي", "إصابة عمل"];
-    case "rent":
-      return ["إيجار", "مأجور", "بدل المثل", "إخلاء مأجور"];
-    case "cybercrime":
-      return ["جرائم إلكترونية", "اختراق", "الكتروني", "إلكتروني"];
-    case "e_transactions":
-      return ["توقيع إلكتروني", "معاملات إلكترونية"];
-    case "aml_ctf":
-      return ["غسل أموال", "تمويل الإرهاب"];
-    case "anti_terrorism":
-      return ["إرهاب"];
-    case "media":
-      return ["إعلام", "نشر", "صحفي"];
-    case "execution":
-    case "evidence":
-    case "criminal_procedure":
-    case "procedure":
-    case "companies":
-    case "commercial":
-    case "civil":
-    case "media":
-    case "aml_ctf":
-    case "anti_terrorism":
-    case "cybercrime":
-    case "social_security":
-    case "rent":
-    case "e_transactions":
-    case "traffic":
-    case "sharia":
-    case "labor":
-    case "drugs":
-    case "penal":
-      return [];
-    default:
-      return [];
+  case "traffic":
+    return ["قانون السير", "مرور", "مخالفه مروريه", "مخالفة مرورية", "اشاره حمراء", "اشارة حمراء"];
+  case "drugs":
+    return ["مخدر", "مواد مخدره", "مواد مخدرة", "تعاطي", "ترويج", "اتجار", "قانون المخدرات"];
+  case "sharia":
+    return ["احوال شخصيه", "أحوال شخصية", "ميراث", "تركة", "طلاق", "عدة", "نفقة", "حضانة"];
+  case "labor":
+    return ["قانون العمل", "فصل تعسفي", "عامل", "اشعار", "إشعار", "اجازة", "إجازة"];
+  case "execution":
+    return ["تنفيذ", "حبس المدين", "حبس تنفيذي", "دائره التنفيذ", "دائرة التنفيذ"];
+  case "evidence":
+    return ["اثبات", "إثبات", "السند العادي", "انكار التوقيع", "إنكار التوقيع", "تزوير فرعي"];
+  case "criminal_procedure":
+    return ["اصول المحاكمات الجزائيه", "أصول المحاكمات الجزائية", "استئناف", "الحق الشخصي", "دعوى الحق العام"];
+  case "procedure":
+    return ["اصول المحاكمات", "أصول المحاكمات", "وقف التنفيذ", "وقف تنفيذ الحكم"];
+  case "companies":
+    return ["شركه", "شركة", "مساهمه", "مساهمة", "اسهم", "أسهم"];
+  case "commercial":
+    return ["تجاري", "شيك", "كمبياله", "كمبيالة", "سند لأمر"];
+  case "civil":
+    return ["مدني", "تعويض", "مسؤوليه مدنيه", "مسؤولية مدنية", "عقد"];
+  case "social_security":
+    return ["ضمان اجتماعي", "إصابة عمل"];
+  case "rent":
+    return ["إيجار", "مأجور", "بدل المثل", "إخلاء مأجور"];
+  case "cybercrime":
+    return ["جرائم إلكترونية", "اختراق", "الكتروني", "إلكتروني"];
+  case "e_transactions":
+    return ["توقيع إلكتروني", "معاملات إلكترونية"];
+  case "aml_ctf":
+    return ["غسل أموال", "تمويل الإرهاب"];
+  case "anti_terrorism":
+    return ["إرهاب"];
+  case "media":
+    return ["إعلام", "نشر", "صحفي"];
+  case "penal":
+    return [];
+  default:
+    return [];
   }
 }
 
@@ -1074,26 +1056,26 @@ function articleMatchesStage(law: JordanLawDoc, stage: LegalStage): boolean {
   );
 
   switch (stage) {
-    case "attempt":
-      return blob.includes("شروع") || blob.includes("محاوله") || blob.includes("محاولة");
-    case "use_of_forged":
-      return blob.includes("استعمل المزور") || blob.includes("استعمال مزور") || blob.includes("استعمال سند مزور");
-    case "participation":
-      return blob.includes("اشتراك") || blob.includes("شريك");
-    case "incitement":
-      return blob.includes("تحريض");
-    case "intervention":
-      return blob.includes("تدخل") || blob.includes("متدخل");
-    case "appeal":
-      return blob.includes("استئناف") || blob.includes("الطعن");
-    case "execution_request":
-      return blob.includes("حبس المدين") || blob.includes("تنفيذ") || blob.includes("الدائن");
-    case "evidence_denial":
-      return blob.includes("انكر التوقيع") || blob.includes("إنكار التوقيع") || blob.includes("التوقيع");
-    case "forgery_incident":
-      return blob.includes("التزوير الفرعي") || blob.includes("تزوير فرعي");
-    default:
-      return false;
+  case "attempt":
+    return blob.includes("شروع") || blob.includes("محاوله") || blob.includes("محاولة");
+  case "use_of_forged":
+    return blob.includes("استعمل المزور") || blob.includes("استعمال مزور") || blob.includes("استعمال سند مزور");
+  case "participation":
+    return blob.includes("اشتراك") || blob.includes("شريك");
+  case "incitement":
+    return blob.includes("تحريض");
+  case "intervention":
+    return blob.includes("تدخل") || blob.includes("متدخل");
+  case "appeal":
+    return blob.includes("استئناف") || blob.includes("الطعن");
+  case "execution_request":
+    return blob.includes("حبس المدين") || blob.includes("تنفيذ") || blob.includes("الدائن");
+  case "evidence_denial":
+    return blob.includes("انكر التوقيع") || blob.includes("إنكار التوقيع") || blob.includes("التوقيع");
+  case "forgery_incident":
+    return blob.includes("التزوير الفرعي") || blob.includes("تزوير فرعي");
+  default:
+    return false;
   }
 }
 
@@ -1104,52 +1086,52 @@ function lawNameDomainBoost(law: JordanLawDoc, domain: LawDomain): number {
   if (field === normalizeArabic(domain)) return 90;
 
   switch (domain) {
-    case "traffic":
-      return name.includes("السير") ? 80 : -150;
-    case "drugs":
-      return name.includes("المخدرات") || name.includes("المؤثرات العقليه") || name.includes("المؤثرات العقلية")
-        ? 80
-        : name.includes("العقوبات") ? -160 : -100;
-    case "sharia":
-      return name.includes("الاحوال الشخصيه") || name.includes("الأحوال الشخصية") ? 80 : -180;
-    case "labor":
-      return name.includes("العمل") ? 80 : -120;
-    case "execution":
-      return name.includes("التنفيذ") ? 85 : -140;
-    case "evidence":
-      return name.includes("الاثبات") || name.includes("الإثبات") ? 85 : -140;
-    case "criminal_procedure":
-      return name.includes("اصول المحاكمات الجزائيه") || name.includes("أصول المحاكمات الجزائية")
-        ? 85
-        : name.includes("العقوبات") ? -120 : -100;
-    case "procedure":
-      return name.includes("اصول المحاكمات") || name.includes("أصول المحاكمات") ? 70 : -80;
-    case "companies":
-      return name.includes("الشركات") ? 80 : -100;
-    case "commercial":
-      return name.includes("التجاره") || name.includes("التجاري") ? 80 : -100;
-    case "civil":
-      return name.includes("المدني") ? 80 : -100;
-    case "social_security":
-      return name.includes("الضمان الاجتماعي") ? 80 : -100;
-    case "rent":
-      return name.includes("المالكين") || name.includes("المستاجرين") || name.includes("المستأجرين") ? 80 : -100;
-    case "cybercrime":
-      return name.includes("الجرائم الالكترونيه") || name.includes("الجرائم الإلكترونية") ? 80 : -100;
-    case "e_transactions":
-      return name.includes("المعاملات الالكترونيه") || name.includes("المعاملات الإلكترونية") ? 80 : -100;
-    case "aml_ctf":
-      return name.includes("غسل الاموال") || name.includes("غسل الأموال") ? 80 : -100;
-    case "anti_terrorism":
-      return name.includes("منع الارهاب") || name.includes("مكافحه الارهاب") || name.includes("مكافحة الإرهاب")
-        ? 80
-        : -100;
-    case "media":
-      return name.includes("المطبوعات") || name.includes("الاعلام") || name.includes("الإعلام") ? 80 : -100;
-    case "penal":
-      return name.includes("العقوبات") ? 50 : 0;
-    default:
-      return 0;
+  case "traffic":
+    return name.includes("السير") ? 80 : -150;
+  case "drugs":
+    return name.includes("المخدرات") || name.includes("المؤثرات العقليه") || name.includes("المؤثرات العقلية") ?
+      80 :
+      name.includes("العقوبات") ? -160 : -100;
+  case "sharia":
+    return name.includes("الاحوال الشخصيه") || name.includes("الأحوال الشخصية") ? 80 : -180;
+  case "labor":
+    return name.includes("العمل") ? 80 : -120;
+  case "execution":
+    return name.includes("التنفيذ") ? 85 : -140;
+  case "evidence":
+    return name.includes("الاثبات") || name.includes("الإثبات") ? 85 : -140;
+  case "criminal_procedure":
+    return name.includes("اصول المحاكمات الجزائيه") || name.includes("أصول المحاكمات الجزائية") ?
+      85 :
+      name.includes("العقوبات") ? -120 : -100;
+  case "procedure":
+    return name.includes("اصول المحاكمات") || name.includes("أصول المحاكمات") ? 70 : -80;
+  case "companies":
+    return name.includes("الشركات") ? 80 : -100;
+  case "commercial":
+    return name.includes("التجاره") || name.includes("التجاري") ? 80 : -100;
+  case "civil":
+    return name.includes("المدني") ? 80 : -100;
+  case "social_security":
+    return name.includes("الضمان الاجتماعي") ? 80 : -100;
+  case "rent":
+    return name.includes("المالكين") || name.includes("المستاجرين") || name.includes("المستأجرين") ? 80 : -100;
+  case "cybercrime":
+    return name.includes("الجرائم الالكترونيه") || name.includes("الجرائم الإلكترونية") ? 80 : -100;
+  case "e_transactions":
+    return name.includes("المعاملات الالكترونيه") || name.includes("المعاملات الإلكترونية") ? 80 : -100;
+  case "aml_ctf":
+    return name.includes("غسل الاموال") || name.includes("غسل الأموال") ? 80 : -100;
+  case "anti_terrorism":
+    return name.includes("منع الارهاب") || name.includes("مكافحه الارهاب") || name.includes("مكافحة الإرهاب") ?
+      80 :
+      -100;
+  case "media":
+    return name.includes("المطبوعات") || name.includes("الاعلام") || name.includes("الإعلام") ? 80 : -100;
+  case "penal":
+    return name.includes("العقوبات") ? 50 : 0;
+  default:
+    return 0;
   }
 }
 
@@ -1330,7 +1312,7 @@ function rankLaw(
     reasons.push("weak_topic_match_penalty");
   }
 
-  return { law, score, role, reasons };
+  return {law, score, role, reasons};
 }
 
 function pickTopLaws(
@@ -1392,8 +1374,8 @@ async function searchJordanLaws(question: string): Promise<RankedLaw[]> {
 
   const lawsRef = admin.firestore().collection("jordan_legal_articles");
 
-  let snapshot: FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData>;
-  snapshot = await lawsRef.where("law_domain", "==", scenario.domain).limit(2000).get();
+  const snapshot: FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData> =
+    await lawsRef.where("law_domain", "==", scenario.domain).limit(2000).get();
 
   let allLaws: JordanLawDoc[] = snapshot.docs.map((doc) => {
     const data = doc.data();
@@ -1406,9 +1388,9 @@ async function searchJordanLaws(question: string): Promise<RankedLaw[]> {
       article_title: typeof data.article_title === "string" ? data.article_title : "",
       article_text: typeof data.article_text === "string" ? data.article_text : "",
       category: typeof data.category === "string" ? data.category : "",
-      keywords: Array.isArray(data.keywords)
-        ? data.keywords.filter((x: unknown) => typeof x === "string")
-        : [],
+      keywords: Array.isArray(data.keywords) ?
+        data.keywords.filter((x: unknown) => typeof x === "string") :
+        [],
     };
   });
 
@@ -1425,9 +1407,9 @@ async function searchJordanLaws(question: string): Promise<RankedLaw[]> {
         article_title: typeof data.article_title === "string" ? data.article_title : "",
         article_text: typeof data.article_text === "string" ? data.article_text : "",
         category: typeof data.category === "string" ? data.category : "",
-        keywords: Array.isArray(data.keywords)
-          ? data.keywords.filter((x: unknown) => typeof x === "string")
-          : [],
+        keywords: Array.isArray(data.keywords) ?
+          data.keywords.filter((x: unknown) => typeof x === "string") :
+          [],
       };
     });
   }
@@ -1902,39 +1884,39 @@ ${DOC_BASE_RULES}
 
 function getDomainSystemPrompt(domain: LawDomain): string {
   switch (domain) {
-    case "sharia":
-      return SHARIA_SYSTEM_PROMPT;
-    case "labor":
-      return LABOR_SYSTEM_PROMPT;
-    case "traffic":
-      return TRAFFIC_SYSTEM_PROMPT;
-    case "drugs":
-      return DRUGS_SYSTEM_PROMPT;
-    case "evidence":
-      return EVIDENCE_SYSTEM_PROMPT;
-    case "execution":
-      return EXECUTION_SYSTEM_PROMPT;
-    case "criminal_procedure":
-      return CRIMINAL_PROCEDURE_SYSTEM_PROMPT;
-    case "procedure":
-      return PROCEDURE_SYSTEM_PROMPT;
-    default:
-      return GENERAL_SYSTEM_PROMPT;
+  case "sharia":
+    return SHARIA_SYSTEM_PROMPT;
+  case "labor":
+    return LABOR_SYSTEM_PROMPT;
+  case "traffic":
+    return TRAFFIC_SYSTEM_PROMPT;
+  case "drugs":
+    return DRUGS_SYSTEM_PROMPT;
+  case "evidence":
+    return EVIDENCE_SYSTEM_PROMPT;
+  case "execution":
+    return EXECUTION_SYSTEM_PROMPT;
+  case "criminal_procedure":
+    return CRIMINAL_PROCEDURE_SYSTEM_PROMPT;
+  case "procedure":
+    return PROCEDURE_SYSTEM_PROMPT;
+  default:
+    return GENERAL_SYSTEM_PROMPT;
   }
 }
 
 function getCaseAnalysisPrompt(kind: AnalysisKind): string {
   switch (kind) {
-    case "judgment":
-      return JUDGMENT_PROMPT;
-    case "appeal":
-      return APPEAL_PROMPT;
-    case "contract":
-      return CONTRACT_PROMPT;
-    case "claim_or_memo":
-      return CLAIM_OR_MEMO_PROMPT;
-    default:
-      return GENERAL_DOCUMENT_PROMPT;
+  case "judgment":
+    return JUDGMENT_PROMPT;
+  case "appeal":
+    return APPEAL_PROMPT;
+  case "contract":
+    return CONTRACT_PROMPT;
+  case "claim_or_memo":
+    return CLAIM_OR_MEMO_PROMPT;
+  default:
+    return GENERAL_DOCUMENT_PROMPT;
   }
 }
 
@@ -1950,8 +1932,8 @@ async function callOpenAI(
     temperature: 0.15,
     max_tokens: 1800,
     messages: [
-      { role: "system", content: system },
-      { role: "user", content: userText },
+      {role: "system", content: system},
+      {role: "user", content: userText},
     ],
   });
 
@@ -1961,7 +1943,7 @@ async function callOpenAI(
 /* ===================== AI Function ===================== */
 
 export const lawmindAI = onRequest(
-  { secrets: [openaiKey] },
+  {secrets: [openaiKey]},
   async (req, res) => {
     try {
       await runCors(req, res);
@@ -1972,17 +1954,17 @@ export const lawmindAI = onRequest(
       }
 
       if (req.method !== "POST") {
-        res.status(405).json({ error: "Method Not Allowed. Use POST." });
+        res.status(405).json({error: "Method Not Allowed. Use POST."});
         return;
       }
 
       const body = safeJsonParse(req.body) ?? {};
-      const request_mode = pickRequestMode(body);
+      const requestMode = pickRequestMode(body);
 
       if (req.query?.debug === "1") {
         res.status(200).json({
           version: "LM_ROUTER_FINAL_2026_04_10_A",
-          request_mode,
+          request_mode: requestMode,
           contentType: req.get("content-type"),
           query: req.query,
           bodyKeys: typeof body === "object" ? Object.keys(body) : null,
@@ -1991,23 +1973,23 @@ export const lawmindAI = onRequest(
         return;
       }
 
-      const openai = new OpenAI({ apiKey: openaiKey.value() });
+      const openai = new OpenAI({apiKey: openaiKey.value()});
 
-      if (request_mode === "case_analysis") {
+      if (requestMode === "case_analysis") {
         const facts = clampText(pickCaseFacts(body), 12000);
         const questions = clampText(pickQuestions(body), 4000);
 
         if (!isNonEmptyString(facts) || isPlaceholderPrompt(facts)) {
           res.status(400).json({
             version: "LM_ROUTER_FINAL_2026_04_10_A",
-            request_mode,
+            request_mode: requestMode,
             error: "Missing caseFacts. Send JSON { mode:'case_analysis', caseFacts:'...' }",
           });
           return;
         }
 
-        const analysis_kind = detectAnalysisKind(facts);
-        const system = getCaseAnalysisPrompt(analysis_kind);
+        const analysisKind = detectAnalysisKind(facts);
+        const system = getCaseAnalysisPrompt(analysisKind);
         const userText =
           `النص أو الوقائع المطلوب تحليلها:\n"""${facts}"""\n\n` +
           `أسئلة المحامي (اختياري):\n"""${questions || "لا يوجد"}"""`;
@@ -2020,8 +2002,8 @@ export const lawmindAI = onRequest(
 
         res.status(200).json({
           version: "LM_ROUTER_FINAL_2026_04_10_A",
-          request_mode,
-          analysis_kind,
+          request_mode: requestMode,
+          analysis_kind: analysisKind,
           result,
           answer: result,
         });
@@ -2031,7 +2013,7 @@ export const lawmindAI = onRequest(
       const prompt = pickPrompt(req, body);
 
       if (!isNonEmptyString(prompt) || isPlaceholderPrompt(prompt)) {
-        res.status(400).json({ error: "Missing prompt" });
+        res.status(400).json({error: "Missing prompt"});
         return;
       }
 
@@ -2039,8 +2021,8 @@ export const lawmindAI = onRequest(
 
       if (embeddedDocumentText) {
         const facts = clampText(embeddedDocumentText, 12000);
-        const analysis_kind = detectAnalysisKind(facts);
-        const system = getCaseAnalysisPrompt(analysis_kind);
+        const analysisKind = detectAnalysisKind(facts);
+        const system = getCaseAnalysisPrompt(analysisKind);
 
         const userText =
           `النص القانوني المراد تحليله:\n"""${facts}"""\n\n` +
@@ -2056,7 +2038,7 @@ export const lawmindAI = onRequest(
           version: "LM_ROUTER_FINAL_2026_04_10_A",
           request_mode: "qa",
           topic_mode: "document_analysis",
-          analysis_kind,
+          analysis_kind: analysisKind,
           prompt_echo: prompt,
           result,
           answer: result,
@@ -2065,7 +2047,7 @@ export const lawmindAI = onRequest(
       }
 
       const scenario = analyzeScenario(prompt);
-      const topic_mode = scenario.domain === "sharia" ? "family" : "general";
+      const topicMode = scenario.domain === "sharia" ? "family" : "general";
       const baseSystem = getDomainSystemPrompt(scenario.domain);
       const numbersRequest = isNumbersRequest(prompt);
 
@@ -2101,13 +2083,13 @@ export const lawmindAI = onRequest(
   سادساً: أسئلة توضيحية إضافية
 `.trim();
 
-      const numbersGuard = numbersRequest
-        ? `
+      const numbersGuard = numbersRequest ?
+        `
 تعليمات إضافية للأرقام والمدد:
 - إذا طلب المستخدم مدة أو غرامة أو رقم مادة ولم تكن موجودة بوضوح في النصوص المسترجعة، فلا تختلقها.
 - عند نقص النص، اذكر صراحة أن المدة أو الرقم غير متاح في المواد المسترجعة.
-`.trim()
-        : "";
+`.trim() :
+        "";
 
       const userText =
         `${scenarioMemo}\n\n` +
@@ -2150,7 +2132,7 @@ export const lawmindAI = onRequest(
       res.status(200).json({
         version: "LM_ROUTER_FINAL_2026_04_10_A",
         request_mode: "qa",
-        topic_mode,
+        topic_mode: topicMode,
         law_domain: scenario.domain,
         numbersRequest,
         retrieved_laws_count: laws.length,
@@ -2242,13 +2224,13 @@ async function callVisionOCR(
     `https://vision.googleapis.com/v1/images:annotate?key=${apiKey}`,
     {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         requests: [
           {
-            image: { content: base64 },
-            features: [{ type: "DOCUMENT_TEXT_DETECTION" }],
-            imageContext: { languageHints: ["ar"] },
+            image: {content: base64},
+            features: [{type: "DOCUMENT_TEXT_DETECTION"}],
+            imageContext: {languageHints: ["ar"]},
           },
         ],
       }),
@@ -2267,13 +2249,13 @@ async function callVisionOCR(
     data?.responses?.[0]?.textAnnotations?.[0]?.description ??
     "";
 
-  return { text, raw: data };
+  return {text, raw: data};
 }
 
 /* ===================== OCR Function ===================== */
 
 export const lawmindOCR = onRequest(
-  { secrets: [visionApiKey] },
+  {secrets: [visionApiKey]},
   async (req, res) => {
     try {
       await runCors(req, res);
@@ -2284,7 +2266,7 @@ export const lawmindOCR = onRequest(
       }
 
       if (req.method !== "POST") {
-        res.status(405).json({ error: "Method not allowed" });
+        res.status(405).json({error: "Method not allowed"});
         return;
       }
 
@@ -2292,19 +2274,19 @@ export const lawmindOCR = onRequest(
       const fileUrl = pickFileUrl(body);
 
       if (!fileUrl) {
-        res.status(400).json({ error: "Missing fileUrl" });
+        res.status(400).json({error: "Missing fileUrl"});
         return;
       }
 
       const key = visionApiKey.value();
       if (!key) {
-        res.status(500).json({ error: "Missing VISION_API_KEY secret" });
+        res.status(500).json({error: "Missing VISION_API_KEY secret"});
         return;
       }
 
-      const { bucket, objectPath } = parseStorageUrl(fileUrl);
+      const {bucket, objectPath} = parseStorageUrl(fileUrl);
       const base64 = await downloadStorageFileAsBase64(bucket, objectPath);
-      const { text } = await callVisionOCR(key, base64);
+      const {text} = await callVisionOCR(key, base64);
 
       res.status(200).json({
         status: "done",
